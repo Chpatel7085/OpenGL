@@ -10,6 +10,10 @@
 #include<streambuf>
 #include<string>
 #include "Shader.h"
+#include "io/Keyboard.h"
+#include "io/Mouse.h"
+
+
 
 using namespace std;
 
@@ -20,6 +24,9 @@ void processInput(GLFWwindow* window);
 unsigned int SCR_WIDTH = 800, SCR_HEIGHT = 600;
 float x, y, z;
 
+float mixVal = 0.5;
+float theta = 45.f;
+glm::mat4 mouseTransform = glm::mat4(1.0f);
 
 int main() {
 	cout << "Hello World" << endl;
@@ -59,6 +66,10 @@ int main() {
 	//for dynamically resizing the window
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+	glfwSetKeyCallback(window, Keyboard::keyCallback);
+	glfwSetCursorPosCallback(window, Mouse::cursorPosCallback);
+	glfwSetMouseButtonCallback(window, Mouse::mouseButtonCallback);
+	glfwSetScrollCallback(window, Mouse::mouseWheelCallback);
 	/*
 	   shaders
 	*/
@@ -229,16 +240,20 @@ int main() {
 
 		//create the camera view 
 
+
 		glm::mat4 model = glm::mat4(1.0f);//for translating bodies from local to world space
 		glm::mat4 view = glm::mat4(1.0f);//creating that camera view effect
 		glm::mat4 projection = glm::mat4(1.0f);//for creating the perspective of a user of what can they see
 
+
 		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(-55.f), glm::vec3(0.5f));
 		view = glm::translate(view, glm::vec3(-x, -y, -z));
-		projection = glm::perspective(glm::radians(20.f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(theta), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+
 
 		glBindVertexArray(VAO);
 		
+
 		//draw the first triangle
 		shader.activate();
 		shader.setMat4("model", model);
@@ -268,9 +283,25 @@ int main() {
 }
 
 void processInput(GLFWwindow* window) {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+	if (Keyboard::key(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
+
+	if (Keyboard::key(GLFW_KEY_UP)) {
+		theta += 1.f;
+	}
+
+	if (Keyboard::key(GLFW_KEY_DOWN)) {
+		theta -= 1.f;
+	}
+	if (Keyboard::key(GLFW_KEY_RIGHT)) {
+		x -= 0.1;
+	}
+
+	if (Keyboard::key(GLFW_KEY_LEFT)) {
+		x += 0.1;
+	}
+
 }
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
