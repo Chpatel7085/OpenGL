@@ -1,0 +1,5 @@
+﻿  main.cpp
+C:\Users\chpatel\source\repos\OpenGlTutorial\OpenGlTutorial\src\main.cpp(128,25): warning C4101: 'EBO': unreferenced local variable
+C:\Users\chpatel\source\repos\OpenGlTutorial\OpenGlTutorial\src\main.cpp(28,7): warning C4101: 'infoLog': unreferenced local variable
+C:\Users\chpatel\source\repos\OpenGlTutorial\OpenGlTutorial\src\main.cpp(27,6): warning C4101: 'success': unreferenced local variable
+  OpenGlTutorial.vcxproj -> C:\Users\chpatel\source\repos\OpenGlTutorial\x64\Debug\OpenGlTutorial.exe
